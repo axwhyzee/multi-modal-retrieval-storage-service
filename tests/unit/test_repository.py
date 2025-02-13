@@ -6,7 +6,7 @@ from adapters.repository import AbstractRepository, DocPayload
 from domain.model import DocID
 
 
-class FakeS3Repository(AbstractRepository):
+class FakeRepository(AbstractRepository):
     def __init__(self):
         self._docs: Dict[str, DocPayload] = {}
 
@@ -35,7 +35,7 @@ class FakeS3Repository(AbstractRepository):
 def test_add_and_get_doc(
     doc_id: DocID, doc_payload: DocPayload
 ) -> None:
-    repo = FakeS3Repository()
+    repo = FakeRepository()
     repo.add(doc_id, doc_payload)
     assert repo.get(doc_id) == doc_payload
 
@@ -52,7 +52,7 @@ def test_add_and_get_doc(
 def test_del_non_existent_doc(
     doc_id: DocID, doc_payload: DocPayload
 ) -> None:
-    repo = FakeS3Repository()
+    repo = FakeRepository()
     repo.add(doc_id, doc_payload)
     repo.delete(doc_id)
     with pytest.raises(Exception) as e:
