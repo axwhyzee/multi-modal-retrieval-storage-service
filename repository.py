@@ -19,15 +19,13 @@ class AbstractRepository(ABC):
         raise NotImplementedError
 
 
-class S3Repository:
+class S3Repository(AbstractRepository):
     def __init__(self):
         self._bucket_name = get_aws_bucket_name()
         self._client = boto3.client("s3")
 
     def add(self, doc_id: str, doc_bytes: bytes) -> None:
-        self._client.put_object(
-            Bucket=self._bucket_name, Key=doc_id, Body=doc_bytes
-        )
+        self._client.put_object(Bucket=self._bucket_name, Key=doc_id, Body=doc_bytes)
 
     def delete(self, doc_id: str) -> None:
         self._client.delete_object(Bucket=self._bucket_name, Key=doc_id)

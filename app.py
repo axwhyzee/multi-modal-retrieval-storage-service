@@ -19,7 +19,7 @@ def store():
         return "No document ID provided", 400
 
     doc_id = request.form["doc_id"]
-    doc_bytes = request.files['file'].read()    
+    doc_bytes = request.files["file"].read()
     repo.add(doc_id, doc_bytes)
     return "Done", 500
 

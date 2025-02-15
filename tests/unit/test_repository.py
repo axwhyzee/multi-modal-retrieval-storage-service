@@ -21,9 +21,7 @@ class FakeRepository(AbstractRepository):
 
 @pytest.mark.parametrize(
     "doc_id,doc_bytes",
-    (
-        ("test_doc.jpg", bytes([0])),
-    ),
+    (("test_doc.jpg", bytes([0])),),
 )
 def test_add_and_get_doc(doc_id: str, doc_bytes: bytes) -> None:
     repo = FakeRepository()
@@ -33,9 +31,7 @@ def test_add_and_get_doc(doc_id: str, doc_bytes: bytes) -> None:
 
 @pytest.mark.parametrize(
     "doc_id,doc_bytes",
-    (
-        ("test_doc.jpg", bytes([0])),
-    ),
+    (("test_doc.jpg", bytes([0])),),
 )
 def test_del_non_existent_doc(doc_id: str, doc_bytes: bytes) -> None:
     repo = FakeRepository()

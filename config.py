@@ -7,6 +7,7 @@ from dotenv import find_dotenv, load_dotenv
 def get_aws_bucket_name() -> str:
     return os.environ["AWS_S3_BUCKET_NAME"]
 
+
 def _initialize_aws_creds():
     AWS_CREDS_FILE_PATH = os.path.expanduser("~/.aws/credentials")
     creds_file_path = Path(AWS_CREDS_FILE_PATH)
@@ -17,6 +18,7 @@ def _initialize_aws_creds():
         f'aws_secret_access_key = {os.environ["AWS_S3_BUCKET_SECRET_ACCESS_KEY"]}\n'
         f'region = {os.environ["AWS_S3_BUCKET_REGION"]}'
     )
+
 
 def bootstrap():
     load_dotenv(find_dotenv())
