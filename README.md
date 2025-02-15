@@ -31,3 +31,28 @@ S3 bucket
 |-- user2/
 ...
 ```
+
+## Usage
+### `POST /store`
+```
+import requests
+
+img_path = 'user1/temp.jpg'
+url = 'http://127.0.0.1:5000/store'
+files = {'file': open(img_path, 'rb')}  # Specify the file you want to upload
+
+response = requests.post(url, files=files, data={"doc_id": img_path})
+print(response.text)
+```
+
+### `GET /get/<doc_id>`
+```
+import requests
+
+url = 'http://127.0.0.1:5000/get/user1/temp.jpg'
+
+response = requests.get(url)
+with open('temp.jpg', 'wb') as file:
+    file.write(response.content)
+print(response.text)
+```
