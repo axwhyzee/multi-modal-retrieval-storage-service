@@ -2,54 +2,44 @@ from typing import Dict
 
 import pytest
 
-from adapters.repository import AbstractRepository, DocPayload
-from domain.model import DocID
+from repository import AbstractRepository
 
 
 class FakeRepository(AbstractRepository):
     def __init__(self):
-        self._docs: Dict[str, DocPayload] = {}
+        self._docs: Dict[str, bytes] = {}
 
-    def add(self, doc_id: DocID, doc_payload: DocPayload) -> None:
-        if doc_payload.content_type == "binary/octet-stream":
-            self._docs[doc_id] = doc_payload
-        else:
-            raise ValueError(f"Unrecognized content-type {doc_payload.content_type}")
+    def add(self, doc_id: str, doc_bytes: bytes) -> None:
+        self._docs[doc_id] = doc_bytes
 
-    def delete(self, doc_id: DocID) -> None:
+    def delete(self, doc_id: str) -> None:
         self._docs.pop(doc_id)
 
-    def get(self, doc_id: DocID) -> DocPayload:
+    def get(self, doc_id: str) -> bytes:
         return self._docs[doc_id]
 
 
 @pytest.mark.parametrize(
-    "doc_id,doc_payload",
+    "doc_id,doc_bytes",
     (
-        (
-            "test_doc.jpg",
-            DocPayload(data=bytes([0]), content_type="binary/octet-stream"),
-        ),
+        ("test_doc.jpg", bytes([0])),
     ),
 )
-def test_add_and_get_doc(doc_id: DocID, doc_payload: DocPayload) -> None:
+def test_add_and_get_doc(doc_id: str, doc_bytes: bytes) -> None:
     repo = FakeRepository()
-    repo.add(doc_id, doc_payload)
-    assert repo.get(doc_id) == doc_payload
+    repo.add(doc_id, doc_bytes)
+    assert repo.get(doc_id) == doc_bytes
 
 
 @pytest.mark.parametrize(
-    "doc_id,doc_payload",
+    "doc_id,doc_bytes",
     (
-        (
-            "test_doc.jpg",
-            DocPayload(data=bytes([0]), content_type="binary/octet-stream"),
-        ),
+        ("test_doc.jpg", bytes([0])),
     ),
 )
-def test_del_non_existent_doc(doc_id: DocID, doc_payload: DocPayload) -> None:
+def test_del_non_existent_doc(doc_id: str, doc_bytes: bytes) -> None:
     repo = FakeRepository()
-    repo.add(doc_id, doc_payload)
+    repo.add(doc_id, doc_bytes)
     repo.delete(doc_id)
     with pytest.raises(Exception) as e:
         repo.delete(doc_id)
