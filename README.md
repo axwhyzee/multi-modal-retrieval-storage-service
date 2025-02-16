@@ -33,6 +33,27 @@ S3 bucket
 ```
 
 ## Usage
+
+### Build docker image and run in container
+Create `.env` with the following env vars
+```
+# AWS S3 bucket connection params
+AWS_S3_BUCKET_ACCESS_KEY=AKIR...
+AWS_S3_BUCKET_SECRET_ACCESS_KEY=R2BOJG1+L+6L5F...
+AWS_S3_BUCKET_NAME=multi-modal-docs
+AWS_S3_BUCKET_REGION=ap-southeast-1
+
+# Redis connection params
+REDIS_HOST=redis-....ap-southeast-1-1.ec2.redns.redis-cloud.com
+REDIS_PORT=16221
+REDIS_USERNAME=default
+REDIS_PASSWORD=ms95Z6...
+```
+
+```
+docker-compose up
+```
+
 ### `POST /add`
 ```
 import requests
