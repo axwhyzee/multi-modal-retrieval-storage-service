@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 
 import boto3
 
-from config import get_aws_bucket_name
+from config import get_aws_connection_params, get_aws_s3_bucket_name
 
 
 class AbstractRepository(ABC):
@@ -21,8 +21,8 @@ class AbstractRepository(ABC):
 
 class S3Repository(AbstractRepository):
     def __init__(self):
-        self._bucket_name = get_aws_bucket_name()
-        self._client = boto3.client("s3")
+        self._bucket_name = get_aws_s3_bucket_name()
+        self._client = boto3.client("s3", **get_aws_connection_params())
 
     def add(self, doc_id: str, doc_bytes: bytes) -> None:
         self._client.put_object(Bucket=self._bucket_name, Key=doc_id, Body=doc_bytes)
