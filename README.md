@@ -33,12 +33,12 @@ S3 bucket
 ```
 
 ## Usage
-### `POST /store`
+### `POST /add`
 ```
 import requests
 
 img_path = 'user1/temp.jpg'
-url = 'http://127.0.0.1:5000/store'
+url = 'http://127.0.0.1:5000/add'
 files = {'file': open(img_path, 'rb')}  # Specify the file you want to upload
 
 response = requests.post(url, files=files, data={"doc_id": img_path})
