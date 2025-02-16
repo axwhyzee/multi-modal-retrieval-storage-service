@@ -32,9 +32,8 @@ S3 bucket
 ...
 ```
 
-## Usage
+## Installation
 
-### Build docker image and run in container
 Create `.env` with the following env vars
 ```
 # AWS S3 bucket connection params
@@ -51,8 +50,11 @@ REDIS_PASSWORD=ms95Z6...
 ```
 
 ```
+# build docker image and run container
 docker-compose up
 ```
+
+## Usage
 
 ### `POST /add`
 ```
