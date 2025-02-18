@@ -1,15 +1,12 @@
 from flask import Flask, Response, request
 from flask_cors import CORS
 
-from adapters.event_publisher import AbstractPublisher, RedisPublisher
 from adapters.repository import AbstractRepository, S3Repository
-from service_layer.services import add_doc, get_doc
 
 app = Flask(__name__)
 CORS(app)
 
 repo: AbstractRepository = S3Repository()
-publisher: AbstractPublisher = RedisPublisher()
 
 
 @app.route("/add", methods=["POST"])
@@ -19,11 +16,9 @@ def add():
     if "doc_id" not in request.form:
         return "No document ID provided", 400
     try:
-        add_doc(
+        repo.add(
             doc_id=request.form["doc_id"],
-            doc_bytes=request.files["file"].read(),
-            repo=repo,
-            publisher=publisher,
+            doc_bytes=request.files["file"].read()
         )
     except Exception as e:
         return str(e), 400
@@ -32,7 +27,7 @@ def add():
 
 @app.route("/get/<path:doc_id>", methods=["GET"])
 def get(doc_id: str):
-    doc_bytes = get_doc(doc_id=doc_id, repo=repo)
+    doc_bytes = repo.get(doc_id=doc_id)
     return Response(doc_bytes)
 
 
