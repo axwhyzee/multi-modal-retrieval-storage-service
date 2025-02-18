@@ -1,12 +1,10 @@
-from typing import Dict, Iterator, List
+from typing import Dict, Iterator
 
 import pytest
 from flask.testing import FlaskClient
 
-from adapters.event_publisher import AbstractPublisher
 from adapters.repository import AbstractRepository
 from app import app
-from domain.events import Event
 
 
 class FakeRepository(AbstractRepository):
@@ -23,22 +21,9 @@ class FakeRepository(AbstractRepository):
         return self._docs[doc_id]
 
 
-class FakePublisher(AbstractPublisher):
-    def __init__(self):
-        self.published: List[Event] = []
-
-    def publish(self, event: Event) -> None:
-        self.published.append(event)
-
-
 @pytest.fixture
 def fake_repo() -> AbstractRepository:
     return FakeRepository()
-
-
-@pytest.fixture
-def fake_publisher() -> AbstractPublisher:
-    return FakePublisher()
 
 
 @pytest.fixture
