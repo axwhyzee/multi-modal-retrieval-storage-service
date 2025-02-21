@@ -2,6 +2,7 @@ import os
 from typing import Any, Dict, TypeAlias
 
 from dotenv import find_dotenv, load_dotenv
+
 load_dotenv(find_dotenv())
 
 Config: TypeAlias = Dict[str, Any]

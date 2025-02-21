@@ -1,5 +1,5 @@
 services:
-  web:
+  storage-service:
     build: .
     ports:
       - "5001:5000"

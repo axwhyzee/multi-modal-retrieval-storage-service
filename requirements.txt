@@ -1,3 +1,4 @@
+black==25.1.0
 blinker==1.9.0
 boto3==1.36.18
 boto3-stubs==1.36.21
@@ -8,15 +9,19 @@ cffi==1.17.1
 charset-normalizer==3.4.1
 click==8.1.8
 cryptography==44.0.1
+event_core @ git+https://github.com/axwhyzee/multi-modal-retrieval-event-core.git@da1f2a17c2731d4a36b6547e3a4a561400679072
 Flask==3.1.0
 Flask-Cors==5.0.0
 gunicorn==21.2.0
 idna==3.10
 iniconfig==2.0.0
+isort==6.0.0
 itsdangerous==2.2.0
 Jinja2==3.1.5
 jmespath==1.0.1
 MarkupSafe==3.0.2
+mypy==1.15.0
+mypy-extensions==1.0.0
 packaging==24.2
 pathspec==0.12.1
 platformdirs==4.3.6
@@ -28,13 +33,20 @@ python-dateutil==2.9.0.post0
 python-dotenv==1.0.1
 PyYAML==6.0.2
 redis==5.2.1
+requests==2.32.3
 responses==0.25.6
 s3transfer==0.11.2
 six==1.17.0
 types-awscrt==0.23.10
+types-colorama==0.4.15.20240311
+types-docutils==0.21.0.20241128
 types-Flask-Cors==5.0.0.20240902
 types-jmespath==1.0.2.20240106
+types-pexpect==4.9.0.20241208
+types-Pygments==2.19.0.20250219
+types-requests==2.32.0.20241016
 types-s3transfer==0.11.2
+types-setuptools==75.8.0.20250210
 typing_extensions==4.12.2
 urllib3==2.3.0
 Werkzeug==3.1.3
