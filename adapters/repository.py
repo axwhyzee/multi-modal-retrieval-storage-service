@@ -1,9 +1,26 @@
+import logging
+from abc import ABC, abstractmethod
 from pathlib import Path
 
-import boto3
-from event_core.adapters.repository.base import AbstractRepository  # type: ignore
+import boto3  # type: ignore
 
 from config import get_aws_connection_params, get_aws_s3_bucket_name
+
+logger = logging.getLogger(__name__)
+
+
+class AbstractRepository(ABC):
+    @abstractmethod
+    def add(self, data: bytes, key: str) -> None:
+        raise NotImplementedError
+
+    @abstractmethod
+    def get(self, key: str) -> bytes:
+        raise NotImplementedError
+
+    @abstractmethod
+    def delete(self, key: str) -> None:
+        raise NotImplementedError
 
 
 class S3Repository(AbstractRepository):
@@ -23,7 +40,7 @@ class S3Repository(AbstractRepository):
 
 
 class LocalRepository(AbstractRepository):
-    """For testing without consumption of S3 resouces"""
+    """For testing without consumption of S3 resources"""
 
     def __init__(self):
         self._upload_folder = Path("uploads")
