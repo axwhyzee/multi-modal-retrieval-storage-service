@@ -37,16 +37,16 @@ S3 bucket
 Create `.env` with the following env vars
 ```
 # AWS S3 bucket connection params
-AWS_S3_BUCKET_ACCESS_KEY=AKIR...
-AWS_S3_BUCKET_SECRET_ACCESS_KEY=R2BOJG1+L+6L5F...
-AWS_S3_BUCKET_NAME=multi-modal-docs
-AWS_S3_BUCKET_REGION=ap-southeast-1
+AWS_S3_BUCKET_ACCESS_KEY=...
+AWS_S3_BUCKET_SECRET_ACCESS_KEY=...
+AWS_S3_BUCKET_NAME=...
+AWS_S3_BUCKET_REGION=...
 
 # Redis connection params
-REDIS_HOST=redis-....ap-southeast-1-1.ec2.redns.redis-cloud.com
-REDIS_PORT=16221
-REDIS_USERNAME=default
-REDIS_PASSWORD=ms95Z6...
+REDIS_HOST=redis-...
+REDIS_PORT=...
+REDIS_USERNAME=...
+REDIS_PASSWORD=...
 ```
 
 ```
@@ -64,11 +64,11 @@ img_path = 'user1/temp.jpg'
 url = 'http://127.0.0.1:5001/add'
 files = {'file': open(img_path, 'rb')}  # Specify the file you want to upload
 
-response = requests.post(url, files=files, data={"doc_id": img_path})
+response = requests.post(url, files=files, data={"key": img_path, "obj_type": "DOC"})
 print(response.text)
 ```
 
-### `GET /get/<doc_id>`
+### `GET /get/<key>`
 ```
 import requests
 
