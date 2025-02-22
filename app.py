@@ -13,9 +13,9 @@ def add():
     if "file" not in request.files:
         return "File required", 400
     if "key" not in request.form:
-        return "`key` provided", 400
+        return "`key` required", 400
     if "obj_type" not in request.form:
-        return "`obj_type` required"
+        return "`obj_type` required", 400
 
     data = request.files["file"].read()
     key = request.form["key"]
