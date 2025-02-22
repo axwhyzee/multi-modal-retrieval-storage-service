@@ -10,7 +10,7 @@ from event_core.domain.events import (
 )
 from event_core.domain.types import ObjectType
 
-from adapters.repository import S3Repository
+from repository import S3Repository
 
 repo = S3Repository()
 pub = RedisPublisher()

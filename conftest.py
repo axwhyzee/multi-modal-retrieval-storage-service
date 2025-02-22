@@ -6,7 +6,7 @@ from event_core.adapters.services.exceptions import ObjectNotExists
 from event_core.domain.events import Event
 from flask.testing import FlaskClient
 
-from adapters.repository import AbstractRepository
+from repository import AbstractRepository
 from app import app
 
 

@@ -2,7 +2,7 @@ from event_core.adapters.services.exceptions import FailedToStore
 from flask import Flask, Response, request
 from flask_cors import CORS
 
-from services.handlers import handle_add, handle_delete, handle_get
+from handlers import handle_add, handle_delete, handle_get
 
 app = Flask(__name__)
 CORS(app)
