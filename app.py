@@ -14,15 +14,18 @@ def add():
         return "File required", 400
     if "key" not in request.form:
         return "`key` required", 400
+    if "parent_key" not in request.form:
+        return "`parent_key` required", 400
     if "obj_type" not in request.form:
         return "`obj_type` required", 400
 
     data = request.files["file"].read()
     key = request.form["key"]
+    parent_key = request.form["parent_key"]
     obj_type = request.form["obj_type"]
 
     try:
-        handle_add(data, key, obj_type)
+        handle_add(data, key, parent_key, obj_type)
     except FailedToStore as e:
         return str(e), 400
     except KeyError as e:

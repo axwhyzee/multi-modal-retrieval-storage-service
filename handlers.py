@@ -23,9 +23,9 @@ EVENTS: Dict[str, Type[ObjStored]] = {
 }
 
 
-def handle_add(data: bytes, key: str, obj_type: str):
+def handle_add(data: bytes, key: str, parent_key: str, obj_type: str):
     repo.add(data, key)
-    event = EVENTS[obj_type](obj_path=key)
+    event = EVENTS[obj_type](key=key, parent_key=parent_key)
     pub.publish(event)
 
 
