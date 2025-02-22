@@ -1,4 +1,4 @@
-from event_core.adapters.exceptions import FailedToStore
+from event_core.adapters.services.exceptions import FailedToStore
 from flask import Flask, Response, request
 from flask_cors import CORS
 

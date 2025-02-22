@@ -1,8 +1,8 @@
 from typing import Dict, Iterator
 
 import pytest
-from event_core.adapters.exceptions import ObjectNotExists
 from event_core.adapters.pubsub import AbstractPublisher
+from event_core.adapters.services.exceptions import ObjectNotExists
 from event_core.domain.events import Event
 from flask.testing import FlaskClient
 
