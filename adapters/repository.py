@@ -44,11 +44,11 @@ class LocalRepository(AbstractRepository):
 
     def __init__(self):
         self._upload_folder = Path("uploads")
-        self._upload_folder.mkdir(exist_ok=True)
+        self._upload_folder.mkdir(parents=True, exist_ok=True)
 
     def add(self, data: bytes, key: str) -> None:
         local_path = self._upload_folder / key
-        local_path.parent.mkdir(exist_ok=True)
+        local_path.parent.mkdir(parents=True, exist_ok=True)
         local_path.write_bytes(data)
 
     def delete(self, key: str) -> None:
