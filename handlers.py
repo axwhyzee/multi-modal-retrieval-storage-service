@@ -1,6 +1,7 @@
 from typing import Dict, Type
 
 from event_core.adapters.pubsub import RedisPublisher
+from event_core.config import get_deployment_env
 from event_core.domain.events import (
     ChunkStored,
     ChunkThumbnailStored,
@@ -10,9 +11,9 @@ from event_core.domain.events import (
 )
 from event_core.domain.types import ObjectType
 
-from repository import S3Repository
+from repository import LocalRepository, S3Repository
 
-repo = S3Repository()
+repo = LocalRepository() if get_deployment_env() == "DEV" else S3Repository()
 pub = RedisPublisher()
 
 EVENTS: Dict[str, Type[ObjStored]] = {
@@ -23,9 +24,9 @@ EVENTS: Dict[str, Type[ObjStored]] = {
 }
 
 
-def handle_add(data: bytes, key: str, parent_key: str, obj_type: str):
+def handle_add(data: bytes, key: str, obj_type: str):
     repo.add(data, key)
-    event = EVENTS[obj_type](key=key, parent_key=parent_key)
+    event = EVENTS[obj_type](key=key)
     pub.publish(event)
 
 
