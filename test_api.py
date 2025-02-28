@@ -14,7 +14,7 @@ from event_core.domain.types import Modal, ObjectType
 from flask.testing import FlaskClient
 
 from app import app
-from bootstrap import DIContainer, wire_container
+from bootstrap import DIContainer, MODULES
 from repository import FakeRepository
 
 
@@ -44,7 +44,7 @@ def container() -> DIContainer:
     container = DIContainer()
     container.repo.override(FakeRepository())
     container.pub.override(FakePublisher())
-    wire_container(container)
+    container.wire(modules=MODULES)
     return container
 
 
