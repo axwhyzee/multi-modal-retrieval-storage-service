@@ -4,6 +4,8 @@ from event_core.config import get_deployment_env
 
 from repository import LocalRepository, S3Repository
 
+MODULES = ("handlers",)
+
 
 class DIContainer(containers.DeclarativeContainer):
     repo = providers.Singleton(
@@ -12,10 +14,6 @@ class DIContainer(containers.DeclarativeContainer):
     pub = providers.Singleton(RedisPublisher)
 
 
-def wire_container(container: DIContainer):
-    container.wire(modules=["handlers"])
-
-
 def bootstrap() -> None:
     container = DIContainer()
-    wire_container(container)
+    container.wire(modules=MODULES)
