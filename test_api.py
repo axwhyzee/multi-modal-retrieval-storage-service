@@ -13,7 +13,7 @@ from event_core.domain.events import (
     Event,
     ObjStored,
 )
-from event_core.domain.types import ObjectType
+from event_core.domain.types import Modal, ObjectType
 from flask.testing import FlaskClient
 
 from app import app
@@ -59,6 +59,11 @@ def data() -> bytes:
 
 
 @pytest.fixture
+def modal() -> Modal:
+    return Modal.TEXT
+
+
+@pytest.fixture
 def api_client() -> Iterator[FlaskClient]:
     with app.test_client() as client:
         yield client
@@ -84,6 +89,7 @@ def test_get_endpoint(key: str, data: bytes, api_client: FlaskClient) -> None:
 def test_adds_object_to_repo_and_publish_event(
     key: str,
     data: bytes,
+    modal: Modal,
     api_client: FlaskClient,
     obj_type: ObjectType,
     expected_event_type: Type[ObjStored],
@@ -91,8 +97,8 @@ def test_adds_object_to_repo_and_publish_event(
     form_data = {
         "file": (BytesIO(data), key),
         "key": key,
-        "parent_key": key,
         "obj_type": obj_type,
+        "modal": Modal.TEXT,
     }
     with patch("handlers.repo", FakeRepository()) as repo, patch(
         "handlers.pub", FakePublisher()
@@ -100,6 +106,9 @@ def test_adds_object_to_repo_and_publish_event(
         response = api_client.post(
             "/add", data=form_data, content_type="multipart/form-data"
         )
+        assert response.status_code == 200
         assert repo.get(key) == data
-        assert pub._published == [expected_event_type(key=key, parent_key=key)]
+        assert pub._published == [
+            expected_event_type(key=key, modal=Modal.TEXT)
+        ]
     assert response.status_code == 200
