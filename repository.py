@@ -1,6 +1,7 @@
 import logging
 from abc import ABC, abstractmethod
 from pathlib import Path
+from typing import Dict
 
 import boto3  # type: ignore
 
@@ -31,12 +32,12 @@ class S3Repository(AbstractRepository):
     def add(self, data: bytes, key: str) -> None:
         self._client.put_object(Bucket=self._bucket_name, Key=key, Body=data)
 
-    def delete(self, key: str) -> None:
-        self._client.delete_object(Bucket=self._bucket_name, Key=key)
-
     def get(self, key: str) -> bytes:
         response = self._client.get_object(Bucket=self._bucket_name, Key=key)
         return response["Body"].read()
+
+    def delete(self, key: str) -> None:
+        self._client.delete_object(Bucket=self._bucket_name, Key=key)
 
 
 class LocalRepository(AbstractRepository):
@@ -51,10 +52,24 @@ class LocalRepository(AbstractRepository):
         local_path.parent.mkdir(parents=True, exist_ok=True)
         local_path.write_bytes(data)
 
+    def get(self, key: str) -> bytes:
+        local_path = self._upload_folder / key
+        return local_path.read_bytes()
+
     def delete(self, key: str) -> None:
         local_path = self._upload_folder / key
         local_path.unlink(missing_ok=True)
 
+
+class FakeRepository(AbstractRepository):
+    def __init__(self):
+        self._docs: Dict[str, bytes] = {}
+
+    def add(self, data: bytes, key: str) -> None:
+        self._docs[key] = data
+
     def get(self, key: str) -> bytes:
-        local_path = self._upload_folder / key
-        return local_path.read_bytes()
+        return self._docs[key]
+
+    def delete(self, key: str) -> None:
+        self._docs.pop(key)

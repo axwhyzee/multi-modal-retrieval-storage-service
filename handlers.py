@@ -1,7 +1,7 @@
 from typing import Dict, Type
 
-from event_core.adapters.pubsub import RedisPublisher
-from event_core.config import get_deployment_env
+from dependency_injector.wiring import Provide, inject
+from event_core.adapters.pubsub import AbstractPublisher
 from event_core.domain.events import (
     ChunkStored,
     ChunkThumbnailStored,
@@ -11,10 +11,8 @@ from event_core.domain.events import (
 )
 from event_core.domain.types import Modal, ObjectType
 
-from repository import LocalRepository, S3Repository
-
-repo = LocalRepository() if get_deployment_env() == "DEV" else S3Repository()
-pub = RedisPublisher()
+from bootstrap import DIContainer
+from repository import AbstractRepository
 
 EVENTS: Dict[str, Type[ObjStored]] = {
     ObjectType.CHUNK: ChunkStored,
@@ -24,15 +22,29 @@ EVENTS: Dict[str, Type[ObjStored]] = {
 }
 
 
-def handle_add(data: bytes, key: str, obj_type: str, modal: Modal):
+@inject
+def handle_add(
+    data: bytes,
+    key: str,
+    obj_type: str,
+    modal: Modal,
+    repo: AbstractRepository = Provide[DIContainer.repo],
+    pub: AbstractPublisher = Provide[DIContainer.pub],
+):
     repo.add(data, key)
     event = EVENTS[obj_type](key=key, modal=modal)
     pub.publish(event)
 
 
-def handle_get(key: str) -> bytes:
+@inject
+def handle_get(
+    key: str, repo: AbstractRepository = Provide[DIContainer.repo]
+) -> bytes:
     return repo.get(key)
 
 
-def handle_delete(key: str) -> None:
+@inject
+def handle_delete(
+    key: str, repo: AbstractRepository = Provide[DIContainer.repo]
+) -> None:
     repo.delete(key)

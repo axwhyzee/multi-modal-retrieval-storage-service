@@ -1,5 +1,5 @@
 from event_core.adapters.services.exceptions import FailedToStore
-from flask import Flask, Response, request
+from flask import Flask, request
 from flask_cors import CORS
 
 from handlers import handle_add, handle_delete, handle_get
@@ -36,7 +36,7 @@ def add():
 
 @app.route("/get/<path:key>", methods=["GET"])
 def get(key: str):
-    return Response(handle_get(key))
+    return handle_get(key), 200
 
 
 @app.route("/delete/<path:key>", methods=["GET"])
