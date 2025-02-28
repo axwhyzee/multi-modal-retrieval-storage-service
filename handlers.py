@@ -9,7 +9,7 @@ from event_core.domain.events import (
     DocThumbnailStored,
     ObjStored,
 )
-from event_core.domain.types import ObjectType
+from event_core.domain.types import Modal, ObjectType
 
 from repository import LocalRepository, S3Repository
 
@@ -24,9 +24,9 @@ EVENTS: Dict[str, Type[ObjStored]] = {
 }
 
 
-def handle_add(data: bytes, key: str, obj_type: str):
+def handle_add(data: bytes, key: str, obj_type: str, modal: Modal):
     repo.add(data, key)
-    event = EVENTS[obj_type](key=key)
+    event = EVENTS[obj_type](key=key, modal=modal)
     pub.publish(event)
 
 

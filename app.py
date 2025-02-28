@@ -10,19 +10,23 @@ CORS(app)
 
 @app.route("/add", methods=["POST"])
 def add():
+    REQUIRED_FIELDS = ("key", "obj_type", "modal")
+    missing_fields = []
     if "file" not in request.files:
-        return "File required", 400
-    if "key" not in request.form:
-        return "`key` required", 400
-    if "obj_type" not in request.form:
-        return "`obj_type` required", 400
+        missing_fields.append("file")
+    for field in REQUIRED_FIELDS:
+        if field not in request.form:
+            missing_fields.append(field)
+    if missing_fields:
+        return f"({','.join(missing_fields)}) required", 400
 
     data = request.files["file"].read()
     key = request.form["key"]
     obj_type = request.form["obj_type"]
+    modal = request.form["modal"]
 
     try:
-        handle_add(data, key, obj_type)
+        handle_add(data, key, obj_type, modal)
     except FailedToStore as e:
         return str(e), 400
     except KeyError as e:
