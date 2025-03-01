@@ -31,7 +31,7 @@ def handle_add(
     repo: AbstractRepository = Provide[DIContainer.repo],
     pub: AbstractPublisher = Provide[DIContainer.pub],
 ):
-    repo.add(data, key)
+    repo[key] = data
     event = EVENTS[obj_type](key=key, modal=modal)
     pub.publish(event)
 
@@ -40,11 +40,11 @@ def handle_add(
 def handle_get(
     key: str, repo: AbstractRepository = Provide[DIContainer.repo]
 ) -> bytes:
-    return repo.get(key)
+    return repo[key]
 
 
 @inject
 def handle_delete(
     key: str, repo: AbstractRepository = Provide[DIContainer.repo]
 ) -> None:
-    repo.delete(key)
+    del repo[key]

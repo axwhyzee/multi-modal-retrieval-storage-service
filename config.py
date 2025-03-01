@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 from typing import Any, Dict, TypeAlias
 
 from dotenv import find_dotenv, load_dotenv
@@ -18,3 +19,7 @@ def get_aws_connection_params() -> Config:
         "aws_secret_access_key": os.environ["AWS_S3_BUCKET_SECRET_ACCESS_KEY"],
         "region_name": os.environ["AWS_S3_BUCKET_REGION"],
     }
+
+
+def get_local_repo_upload_folder() -> Path:
+    return Path(".uploads")

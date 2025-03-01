@@ -17,4 +17,3 @@ class DIContainer(containers.DeclarativeContainer):
 def bootstrap() -> None:
     container = DIContainer()
     container.wire(modules=MODULES)
-    container.wire(modules=MODULES)

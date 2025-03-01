@@ -14,7 +14,7 @@ from event_core.domain.types import Modal, ObjectType
 from flask.testing import FlaskClient
 
 from app import app
-from bootstrap import DIContainer, MODULES
+from bootstrap import MODULES, DIContainer
 from repository import FakeRepository
 
 
@@ -51,7 +51,8 @@ def container() -> DIContainer:
 def test_get_endpoint(
     key: str, data: bytes, api_client: FlaskClient, container: DIContainer
 ) -> None:
-    container.repo().add(data, key)
+    repo = container.repo()
+    repo[key] = data
     response = api_client.get(f"/get/{key}")
     assert response.status_code == 200
     assert response.data == data
@@ -86,7 +87,7 @@ def test_adds_object_to_repo_and_publish_event(
     )
 
     assert response.status_code == 200
-    assert container.repo().get(key) == data
+    assert container.repo()[key] == data
 
     pub = cast(FakePublisher, container.pub())
     assert pub._published == [expected_event_type(key=key, modal=modal)]
