@@ -1,3 +1,5 @@
+import logging
+
 from event_core.adapters.services.exceptions import FailedToStore
 from flask import Flask, request
 from flask_cors import CORS
@@ -5,8 +7,7 @@ from flask_cors import CORS
 from bootstrap import bootstrap
 from handlers import handle_add, handle_delete, handle_get
 
-app = Flask(__name__)
-CORS(app)
+app: Flask
 
 
 @app.route("/add", methods=["POST"])
@@ -46,6 +47,16 @@ def delete(key: str):
     return "Success", 200
 
 
-if __name__ == "__main__":
+def create_app():
+    logging.basicConfig(level=logging.INFO)
+    app = Flask(__name__)
+    CORS(app)
     bootstrap()
+    return app
+
+
+app = create_app()
+
+
+if __name__ == "__main__":
     app.run(port=5001)
