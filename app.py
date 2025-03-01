@@ -7,7 +7,15 @@ from flask_cors import CORS
 from bootstrap import bootstrap
 from handlers import handle_add, handle_delete, handle_get
 
-app: Flask
+def create_app():
+    logging.basicConfig(level=logging.INFO)
+    app = Flask(__name__)
+    CORS(app)
+    bootstrap()
+    return app
+
+
+app = create_app()
 
 
 @app.route("/add", methods=["POST"])
@@ -45,17 +53,6 @@ def get(key: str):
 def delete(key: str):
     handle_delete(key)
     return "Success", 200
-
-
-def create_app():
-    logging.basicConfig(level=logging.INFO)
-    app = Flask(__name__)
-    CORS(app)
-    bootstrap()
-    return app
-
-
-app = create_app()
 
 
 if __name__ == "__main__":
