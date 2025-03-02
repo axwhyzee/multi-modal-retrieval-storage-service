@@ -1,4 +1,4 @@
-from typing import Dict, Type
+from typing import Dict, Type, List
 
 from dependency_injector.wiring import Provide, inject
 from event_core.adapters.pubsub import AbstractPublisher
@@ -48,3 +48,13 @@ def handle_delete(
     key: str, repo: AbstractRepository = Provide[DIContainer.repo]
 ) -> None:
     del repo[key]
+
+
+@inject
+def handle_len(repo: AbstractRepository = Provide[DIContainer.repo]) -> int:
+    return len(repo)
+
+
+@inject
+def handle_list(repo: AbstractRepository = Provide[DIContainer.repo]) -> List[str]:
+    return list(repo)

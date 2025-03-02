@@ -5,7 +5,14 @@ from flask import Flask, request
 from flask_cors import CORS
 
 from bootstrap import bootstrap
-from handlers import handle_add, handle_delete, handle_get
+from handlers import (
+    handle_add,
+    handle_delete,
+    handle_get,
+    handle_len,
+    handle_list,
+)
+
 
 def create_app():
     logging.basicConfig(level=logging.INFO)
@@ -53,6 +60,16 @@ def get(key: str):
 def delete(key: str):
     handle_delete(key)
     return "Success", 200
+
+
+@app.route("/len", methods=["GET"])
+def length():
+    return handle_len(), 200
+
+
+@app.route("/list", methods=["GET"])
+def list_keys():
+    return handle_list(), 200
 
 
 if __name__ == "__main__":
