@@ -29,11 +29,6 @@ def data() -> bytes:
 
 
 @pytest.fixture
-def modal() -> Modal:
-    return Modal.TEXT
-
-
-@pytest.fixture
 def api_client() -> Iterator[FlaskClient]:
     with app.test_client() as client:
         yield client
@@ -70,7 +65,6 @@ def test_get_endpoint(
 def test_adds_object_to_repo_and_publish_event(
     key: str,
     data: bytes,
-    modal: Modal,
     container: DIContainer,
     api_client: FlaskClient,
     unit_type: UnitType,
@@ -80,7 +74,6 @@ def test_adds_object_to_repo_and_publish_event(
         "file": (BytesIO(data), key),
         "key": key,
         "type": unit_type,
-        "modal": Modal.TEXT,
     }
     response = api_client.post(
         "/add", data=form_data, content_type="multipart/form-data"
@@ -90,4 +83,4 @@ def test_adds_object_to_repo_and_publish_event(
     assert container.repo()[key] == data
 
     pub = cast(FakePublisher, container.pub())
-    assert pub._published == [expected_event_type(key=key, modal=modal)]
+    assert pub._published == [expected_event_type(key=key)]

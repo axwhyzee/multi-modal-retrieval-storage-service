@@ -27,7 +27,10 @@ app = create_app()
 
 @app.route("/add", methods=["POST"])
 def add():
-    REQUIRED_FIELDS = ("key", "type", "modal")
+    REQUIRED_FIELDS = (
+        "key",
+        "type",
+    )
     missing_fields = []
     if "file" not in request.files:
         missing_fields.append("file")
@@ -40,10 +43,9 @@ def add():
     data = request.files["file"].read()
     key = request.form["key"]
     unit_type = request.form["type"]
-    modal = request.form["modal"]
 
     try:
-        handle_add(data, key, unit_type, modal)
+        handle_add(data, key, unit_type)
     except FailedToStore as e:
         return str(e), 400
     except KeyError as e:

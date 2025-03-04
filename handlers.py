@@ -9,7 +9,7 @@ from event_core.domain.events import (
     DocThumbnailStored,
     ObjStored,
 )
-from event_core.domain.types import Modal, UnitType
+from event_core.domain.types import UnitType
 
 from bootstrap import DIContainer
 from repository import AbstractRepository
@@ -27,12 +27,11 @@ def handle_add(
     data: bytes,
     key: str,
     obj_type: str,
-    modal: Modal,
     repo: AbstractRepository = Provide[DIContainer.repo],
     pub: AbstractPublisher = Provide[DIContainer.pub],
 ):
     repo[key] = data
-    event = EVENTS[obj_type](key=key, modal=modal)
+    event = EVENTS[obj_type](key=key)
     pub.publish(event)
 
 
