@@ -1,4 +1,4 @@
-from typing import Dict, Type, List
+from typing import Dict, List, Type
 
 from dependency_injector.wiring import Provide, inject
 from event_core.adapters.pubsub import AbstractPublisher
@@ -9,16 +9,16 @@ from event_core.domain.events import (
     DocThumbnailStored,
     ObjStored,
 )
-from event_core.domain.types import Modal, ObjectType
+from event_core.domain.types import Modal, UnitType
 
 from bootstrap import DIContainer
 from repository import AbstractRepository
 
 EVENTS: Dict[str, Type[ObjStored]] = {
-    ObjectType.CHUNK: ChunkStored,
-    ObjectType.CHUNK_THUMBNAIL: ChunkThumbnailStored,
-    ObjectType.DOC: DocStored,
-    ObjectType.DOC_THUMBNAIL: DocThumbnailStored,
+    UnitType.CHUNK: ChunkStored,
+    UnitType.CHUNK_THUMBNAIL: ChunkThumbnailStored,
+    UnitType.DOC: DocStored,
+    UnitType.DOC_THUMBNAIL: DocThumbnailStored,
 }
 
 
@@ -56,5 +56,7 @@ def handle_len(repo: AbstractRepository = Provide[DIContainer.repo]) -> int:
 
 
 @inject
-def handle_list(repo: AbstractRepository = Provide[DIContainer.repo]) -> List[str]:
+def handle_list(
+    repo: AbstractRepository = Provide[DIContainer.repo],
+) -> List[str]:
     return list(repo)

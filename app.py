@@ -27,7 +27,7 @@ app = create_app()
 
 @app.route("/add", methods=["POST"])
 def add():
-    REQUIRED_FIELDS = ("key", "obj_type", "modal")
+    REQUIRED_FIELDS = ("key", "type", "modal")
     missing_fields = []
     if "file" not in request.files:
         missing_fields.append("file")
@@ -39,15 +39,15 @@ def add():
 
     data = request.files["file"].read()
     key = request.form["key"]
-    obj_type = request.form["obj_type"]
+    unit_type = request.form["type"]
     modal = request.form["modal"]
 
     try:
-        handle_add(data, key, obj_type, modal)
+        handle_add(data, key, unit_type, modal)
     except FailedToStore as e:
         return str(e), 400
     except KeyError as e:
-        return f"Unsupported object type {obj_type}"
+        return f"Unsupported unit type {unit_type}"
     return "Success", 200
 
 

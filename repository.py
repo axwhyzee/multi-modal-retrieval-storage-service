@@ -1,6 +1,5 @@
 import logging
 from collections import abc
-from pathlib import Path
 from typing import Dict, Iterator
 
 import boto3  # type: ignore

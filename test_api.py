@@ -10,7 +10,7 @@ from event_core.domain.events import (
     DocThumbnailStored,
     ObjStored,
 )
-from event_core.domain.types import Modal, ObjectType
+from event_core.domain.types import Modal, UnitType
 from flask.testing import FlaskClient
 
 from app import app
@@ -59,12 +59,12 @@ def test_get_endpoint(
 
 
 @pytest.mark.parametrize(
-    "obj_type,expected_event_type",
+    "unit_type,expected_event_type",
     (
-        (ObjectType.CHUNK, ChunkStored),
-        (ObjectType.CHUNK_THUMBNAIL, ChunkThumbnailStored),
-        (ObjectType.DOC, DocStored),
-        (ObjectType.DOC_THUMBNAIL, DocThumbnailStored),
+        (UnitType.CHUNK, ChunkStored),
+        (UnitType.CHUNK_THUMBNAIL, ChunkThumbnailStored),
+        (UnitType.DOC, DocStored),
+        (UnitType.DOC_THUMBNAIL, DocThumbnailStored),
     ),
 )
 def test_adds_object_to_repo_and_publish_event(
@@ -73,13 +73,13 @@ def test_adds_object_to_repo_and_publish_event(
     modal: Modal,
     container: DIContainer,
     api_client: FlaskClient,
-    obj_type: ObjectType,
+    unit_type: UnitType,
     expected_event_type: Type[ObjStored],
 ) -> None:
     form_data = {
         "file": (BytesIO(data), key),
         "key": key,
-        "obj_type": obj_type,
+        "type": unit_type,
         "modal": Modal.TEXT,
     }
     response = api_client.post(
