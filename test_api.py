@@ -10,7 +10,7 @@ from event_core.domain.events import (
     DocThumbnailStored,
     ObjStored,
 )
-from event_core.domain.types import Modal, UnitType
+from event_core.domain.types import UnitType
 from flask.testing import FlaskClient
 
 from app import app
