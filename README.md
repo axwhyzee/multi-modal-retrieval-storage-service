@@ -64,7 +64,7 @@ img_path = 'user1/temp.jpg'
 url = 'http://127.0.0.1:5001/add'
 files = {'file': open(img_path, 'rb')}  # Specify the file you want to upload
 
-response = requests.post(url, files=files, data={"key": img_path, "obj_type": "DOC"})
+response = requests.post(url, files=files, data={"key": img_path, "type": "DOC"})
 print(response.text)
 ```
 
