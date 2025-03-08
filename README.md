@@ -1,38 +1,53 @@
 # Storage Service
 Handles storage of multi-modal documents. Single API is exposed regardless of the underlying mix of storage systems.
-Uses REST and event-driven hybrid architecture:
-- REST for direct retrieval of documents by ID.
+Uses request-response and event-driven hybrid architecture:
+- REST APIs for direct retrieval of documents by ID.
 - Event-driven for asynchronous storage of documents.
 
-Documents are stored in `{storage system}/{user}/{doctype}/{doc}` hierarchy
+Documents are stored in `{storage system}/{user}/{doc}/{obj}` hierarchy
 For example:
 ```
 S3 bucket
 |
 |-- user1/
 |   |
-|   |-- thumbnails/
-|   |   |-- 36123.jpg
+|   |-- 36123.mp4
+|   |-- 36123/
+|   |   |-- 0__DOC_THUMBNAIL.png
+|   |   |-- 1__CHUNK.png
+|   |   |-- 1__CHUNK_THUMBNAIL.png
+|   |   |-- 2__CHUNK.png
+|   |   |-- 2__CHUNK_THUMBNAIL.png
 |   |
-|   |-- video_scenes/
-|   |   |-- 36123_4.jpg
-|   |   |-- 36123_9.jpg
+|   |-- 36124.pdf
+|   |-- 36124/
+|   |   |-- 0__DOC_THUMBNAIL.png
+|   |   |-- 1__CHUNK.png
+|   |   |-- 1__CHUNK_THUMBNAIL.png
+|   |   |-- 2__CHUNK.txt
+|   |   |-- 3__CHUNK.txt
 |   |
-|   |-- videos/
-|   |   |-- 36123.mp4
+|   |-- 36125.jpg
+|   |-- 36125/
+|   |   |-- 0__DOC_THUMBNAIL.png
+|   |   |-- 1__CHUNK.png
+|   |   |-- 1__CHUNK_THUMBNAIL.png
 |   |
-|   |-- images/
-|   |   |-- 36124.jpg
-|   |   |-- 36125.png
-|   |
-|   |-- text/
-|       |-- 36127.txt
+|   |-- 36126.txt
+|   |-- 36126/
+|       |-- 1__CHUNK.txt
+|       |-- 2__CHUNK.txt
 |
 |-- user2/
 ...
 ```
 
-## Installation
+## Setup
+```
+python3 -m venv env
+source env/bin/activate
+pip install -r requirements.txt
+```
 
 Create `.env` with the following env vars
 ```
@@ -47,11 +62,6 @@ REDIS_HOST=redis-...
 REDIS_PORT=...
 REDIS_USERNAME=...
 REDIS_PASSWORD=...
-```
-
-```
-# build docker image and run container
-docker-compose up
 ```
 
 ## Usage
