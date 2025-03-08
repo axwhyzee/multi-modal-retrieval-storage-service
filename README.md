@@ -4,7 +4,7 @@ Uses request-response and event-driven hybrid architecture:
 - REST APIs for direct retrieval of documents by ID.
 - Event-driven for asynchronous storage of documents.
 
-Documents are stored in `{storage system}/{user}/{doc}/{obj}` hierarchy
+Documents are stored in `{user}/{doc}/{obj}` hierarchy
 For example:
 ```
 S3 bucket
