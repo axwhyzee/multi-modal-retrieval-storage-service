@@ -68,8 +68,8 @@ class LocalRepository(AbstractRepository):
         local_path.unlink(missing_ok=True)
 
     def __iter__(self) -> Iterator[str]:
-        for path in self._upload_folder.rglob():
-            yield str(path)
+        for path in self._upload_folder.rglob("*"):
+            yield str(path.relative_to(self._upload_folder))
 
     def __len__(self) -> int:
         return len(list(self.__iter__()))
