@@ -3,22 +3,26 @@ from typing import Dict, List, Type
 from dependency_injector.wiring import Provide, inject
 from event_core.adapters.pubsub import AbstractPublisher
 from event_core.domain.events import (
-    ChunkStored,
-    ChunkThumbnailStored,
     DocStored,
     DocThumbnailStored,
+    ElementThumbnailStored,
+    ImageElementStored,
     ObjStored,
+    PlotElementStored,
+    TextElementStored,
 )
-from event_core.domain.types import UnitType
+from event_core.domain.types import Asset, Element
 
 from bootstrap import DIContainer
 from repository import AbstractRepository
 
 EVENTS: Dict[str, Type[ObjStored]] = {
-    UnitType.CHUNK: ChunkStored,
-    UnitType.CHUNK_THUMBNAIL: ChunkThumbnailStored,
-    UnitType.DOC: DocStored,
-    UnitType.DOC_THUMBNAIL: DocThumbnailStored,
+    Asset.DOC: DocStored,
+    Asset.DOC_THUMBNAIL: DocThumbnailStored,
+    Asset.ELEM_THUMBNAIL: ElementThumbnailStored,
+    Element.IMAGE: ImageElementStored,
+    Element.PLOT: PlotElementStored,
+    Element.TEXT: TextElementStored,
 }
 
 
@@ -26,12 +30,12 @@ EVENTS: Dict[str, Type[ObjStored]] = {
 def handle_add(
     data: bytes,
     key: str,
-    obj_type: str,
+    repo_obj_type: str,
     repo: AbstractRepository = Provide[DIContainer.repo],
     pub: AbstractPublisher = Provide[DIContainer.pub],
 ):
     repo[key] = data
-    event = EVENTS[obj_type](key=key)
+    event = EVENTS[repo_obj_type](key=key)
     pub.publish(event)
 
 

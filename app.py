@@ -42,14 +42,14 @@ def add():
 
     data = request.files["file"].read()
     key = request.form["key"]
-    unit_type = request.form["type"]
+    repo_obj_type = request.form["type"]
 
     try:
-        handle_add(data, key, unit_type)
+        handle_add(data, key, repo_obj_type)
     except FailedToStore as e:
         return str(e), 400
     except KeyError as e:
-        return f"Unsupported unit type {unit_type}"
+        return f"Unsupported RepoObject type {repo_obj_type}"
     return "Success", 200
 
 

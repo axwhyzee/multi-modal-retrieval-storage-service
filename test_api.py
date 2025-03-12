@@ -4,13 +4,15 @@ from typing import Iterator, Type, cast
 import pytest
 from event_core.adapters.pubsub import FakePublisher
 from event_core.domain.events import (
-    ChunkStored,
-    ChunkThumbnailStored,
     DocStored,
     DocThumbnailStored,
+    ElementThumbnailStored,
+    ImageElementStored,
     ObjStored,
+    PlotElementStored,
+    TextElementStored,
 )
-from event_core.domain.types import UnitType
+from event_core.domain.types import Asset, Element, RepoObject
 from flask.testing import FlaskClient
 
 from app import app
@@ -54,12 +56,14 @@ def test_get_endpoint(
 
 
 @pytest.mark.parametrize(
-    "unit_type,expected_event_type",
+    "repo_obj_type,expected_event_type",
     (
-        (UnitType.CHUNK, ChunkStored),
-        (UnitType.CHUNK_THUMBNAIL, ChunkThumbnailStored),
-        (UnitType.DOC, DocStored),
-        (UnitType.DOC_THUMBNAIL, DocThumbnailStored),
+        (Asset.DOC, DocStored),
+        (Asset.DOC_THUMBNAIL, DocThumbnailStored),
+        (Asset.ELEM_THUMBNAIL, ElementThumbnailStored),
+        (Element.IMAGE, ImageElementStored),
+        (Element.PLOT, PlotElementStored),
+        (Element.TEXT, TextElementStored),
     ),
 )
 def test_adds_object_to_repo_and_publish_event(
@@ -67,13 +71,13 @@ def test_adds_object_to_repo_and_publish_event(
     data: bytes,
     container: DIContainer,
     api_client: FlaskClient,
-    unit_type: UnitType,
+    repo_obj_type: RepoObject,
     expected_event_type: Type[ObjStored],
 ) -> None:
     form_data = {
         "file": (BytesIO(data), key),
         "key": key,
-        "type": unit_type,
+        "type": repo_obj_type,
     }
     response = api_client.post(
         "/add", data=form_data, content_type="multipart/form-data"
