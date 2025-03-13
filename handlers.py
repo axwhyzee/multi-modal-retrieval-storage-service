@@ -6,6 +6,7 @@ from event_core.domain.events import (
     DocStored,
     DocThumbnailStored,
     ElementThumbnailStored,
+    ElementStored,
     ObjStored,
 )
 from event_core.domain.types import Asset, Element
