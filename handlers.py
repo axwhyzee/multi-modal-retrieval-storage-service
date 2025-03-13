@@ -6,10 +6,7 @@ from event_core.domain.events import (
     DocStored,
     DocThumbnailStored,
     ElementThumbnailStored,
-    ImageElementStored,
     ObjStored,
-    PlotElementStored,
-    TextElementStored,
 )
 from event_core.domain.types import Asset, Element
 
@@ -20,9 +17,9 @@ EVENTS: Dict[str, Type[ObjStored]] = {
     Asset.DOC: DocStored,
     Asset.DOC_THUMBNAIL: DocThumbnailStored,
     Asset.ELEM_THUMBNAIL: ElementThumbnailStored,
-    Element.IMAGE: ImageElementStored,
-    Element.PLOT: PlotElementStored,
-    Element.TEXT: TextElementStored,
+    Element.IMAGE: ElementStored,
+    Element.PLOT: ElementStored,
+    Element.TEXT: ElementStored,
 }
 
 
