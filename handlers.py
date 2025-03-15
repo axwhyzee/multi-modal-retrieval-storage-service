@@ -2,12 +2,15 @@ from typing import Dict, List, Tuple, Type, TypeAlias
 
 from dependency_injector.wiring import Provide, inject
 from event_core.adapters.pubsub import AbstractPublisher
-from event_core.domain.events import (
+from event_core.domain.events.base import (
     DocStored,
     DocThumbnailStored,
     ElementThumbnailStored,
-    ImageElementStored,
     ObjStored,
+)
+from event_core.domain.events.elements import (
+    CodeElementStored,
+    ImageElementStored,
     PlotElementStored,
     TextElementStored,
 )
@@ -26,6 +29,7 @@ EVENTS: Dict[RepoObjectT, EventT] = {
     Element.IMAGE: ImageElementStored,
     Element.PLOT: PlotElementStored,
     Element.TEXT: TextElementStored,
+    Element.CODE: CodeElementStored,
 }
 
 

@@ -3,12 +3,15 @@ from typing import Iterator, Type, cast
 
 import pytest
 from event_core.adapters.pubsub import FakePublisher
-from event_core.domain.events import (
+from event_core.domain.events.base import (
     DocStored,
     DocThumbnailStored,
     ElementThumbnailStored,
-    ImageElementStored,
     ObjStored,
+)
+from event_core.domain.events.elements import (
+    CodeElementStored,
+    ImageElementStored,
     PlotElementStored,
     TextElementStored,
 )
@@ -64,6 +67,7 @@ def test_get_endpoint(
         (Element.IMAGE, ImageElementStored),
         (Element.PLOT, PlotElementStored),
         (Element.TEXT, TextElementStored),
+        (Element.CODE, CodeElementStored),
     ),
 )
 def test_adds_object_to_repo_and_publish_event(

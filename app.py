@@ -66,7 +66,7 @@ def delete(key: str):
 
 @app.route("/len", methods=["GET"])
 def length():
-    return handle_len(), 200
+    return str(handle_len()), 200
 
 
 @app.route("/list", methods=["GET"])
